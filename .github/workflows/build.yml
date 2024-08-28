@@ -65,10 +65,8 @@ jobs:
     needs: [build-linux, build-windows]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout gh-pages branch
-        uses: actions/checkout@v3
-        with:
-          ref: gh-pages
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Download Linux binary
         uses: actions/download-artifact@v4
@@ -80,12 +78,12 @@ jobs:
         with:
           name: windows-binary
 
-      - name: Copy binaries to gh-pages
+      - name: Copy binaries to docs
         run: |
-          mkdir -p docs/linux
-          mkdir -p docs/windows
-          cp build/webcheck docs/linux/
-          cp build/webcheck.exe docs/windows/
+          mkdir -p builds/linux
+          mkdir -p builds/windows
+          cp build/webcheck builds/linux/
+          cp build/webcheck.exe builds/windows/
 
       - name: Commit and push changes
         run: |
