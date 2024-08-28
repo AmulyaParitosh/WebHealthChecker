@@ -84,8 +84,8 @@ jobs:
         run: |
           mkdir -p docs/linux
           mkdir -p docs/windows
-          cp build/my-custom-cli docs/linux/
-          cp build/my-custom-cli.exe docs/windows/
+          cp build/webcheck docs/linux/
+          cp build/webcheck.exe docs/windows/
 
       - name: Commit and push changes
         run: |
