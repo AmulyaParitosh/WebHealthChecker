@@ -60,7 +60,7 @@ jobs:
           go-version: 1.22.x
 
       - name: Make build dir
-        run: if not exist "build/windows" (mkdir "build/windows")
+        run: IF exist build/windows/nul ( echo build/windows exists ) ELSE ( mkdir build/windows && echo build/windows created)
         
       - name: Install dependencies
         run: go mod download
