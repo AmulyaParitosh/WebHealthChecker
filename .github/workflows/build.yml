@@ -30,9 +30,13 @@ jobs:
 
       - name: Build for ${{ matrix.os }}
         run: |
+          |
           mkdir -p build
-          GOOS=${{ matrix.os == 'windows-latest' && echo 'windows' || echo 'linux' }} GOARCH=amd64 go build -o build/${{ matrix.os == 'windows-latest' && echo 'webcheck.exe' || echo 'webcheck' }}
-
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            GOOS=windows GOARCH=amd64 go build -o build/webcheck.exe
+          else
+            GOOS=linux GOARCH=amd64 go build -o build/webcheck
+          fi
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
