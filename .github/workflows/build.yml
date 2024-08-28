@@ -9,28 +9,7 @@ on:
       - master
 
 jobs:
-  make-build-dirs:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Make platform dirs
-        run: mkdir -p build/ubuntu build/windows
-        
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add build
-          git commit -m "Update binaries"
-          git pull
-          git push origin master
-
   build-linux:
-    needs: [make-build-dirs]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -65,7 +44,6 @@ jobs:
           git push origin master
 
   build-windows:
-    needs: [make-build-dirs]
     runs-on: windows-latest
     permissions:
       contents: write
