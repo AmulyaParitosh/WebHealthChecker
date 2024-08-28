@@ -14,6 +14,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Make platform dirs
         run: mkdir -p build/ubuntu build/windows
         
