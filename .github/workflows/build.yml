@@ -39,9 +39,9 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add docs/
+          git add .
           git commit -m "Update binaries"
-          git push origin gh-pages
+          git push origin master
 
   build-windows:
     runs-on: windows-latest
@@ -73,9 +73,9 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add docs/
+          git add .
           git commit -m "Update binaries"
-          git push origin gh-pages
+          git push origin master
           
   # deploy:
   #   needs: [build-linux, build-windows]
