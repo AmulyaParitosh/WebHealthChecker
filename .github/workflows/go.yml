@@ -22,7 +22,7 @@ jobs:
         go-version: '1.22'
 
     - name: Build
-      run: go build -o "webcheck" .
+      run: go build -o "builds/webcheck" .
 
     # - name: Test
     #   run: go test -v ./...
