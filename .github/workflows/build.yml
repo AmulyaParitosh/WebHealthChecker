@@ -9,13 +9,8 @@ on:
       - master
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        go-version: [1.22.2]
-
+  build-linux:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,23 +18,45 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ matrix.go-version }}
+          go-version: 1.22.x
 
       - name: Install dependencies
         run: go mod download
 
-      - name: Build for ${{ matrix.os }}
-        run: |
-          |
-          mkdir -p build
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            GOOS=windows GOARCH=amd64 go build -o build/webcheck.exe
-          else
-            GOOS=linux GOARCH=amd64 go build -o build/webcheck
-          fi
-      - name: Upload artifact
+      - name: Make build dir
+        run: mkdir -p build
+
+      - name: Build for Linux
+        run: go build -o build/webcheck
+
+      - name: Upload Linux artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}-binary
+          name: linux-binary
           path: build/
 
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.22.x
+
+      - name: Make build dir
+        run: mkdir -p build
+        
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Build for Windows
+        run: go build -o build/webcheck.exe
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows-binary
+          path: build/
