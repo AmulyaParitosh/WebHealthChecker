@@ -35,6 +35,14 @@ jobs:
           name: linux-binary
           path: build/
 
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add docs/
+          git commit -m "Update binaries"
+          git push origin gh-pages
+
   build-windows:
     runs-on: windows-latest
     steps:
@@ -60,30 +68,6 @@ jobs:
         with:
           name: windows-binary
           path: build/
-          
-  deploy:
-    needs: [build-linux, build-windows]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download Linux binary
-        uses: actions/download-artifact@v4
-        with:
-          name: linux-binary
-
-      - name: Download Windows binary
-        uses: actions/download-artifact@v4
-        with:
-          name: windows-binary
-
-      - name: Copy binaries to docs
-        run: |
-          mkdir -p builds/linux
-          mkdir -p builds/windows
-          cp build/webcheck builds/linux/
-          cp build/webcheck.exe builds/windows/
 
       - name: Commit and push changes
         run: |
@@ -92,3 +76,35 @@ jobs:
           git add docs/
           git commit -m "Update binaries"
           git push origin gh-pages
+          
+  # deploy:
+  #   needs: [build-linux, build-windows]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+
+  #     - name: Download Linux binary
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: linux-binary
+
+  #     - name: Download Windows binary
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: windows-binary
+
+  #     - name: Copy binaries to docs
+  #       run: |
+  #         mkdir -p builds/linux
+  #         mkdir -p builds/windows
+  #         cp build/webcheck builds/linux/
+  #         cp build/webcheck.exe builds/windows/
+
+  #     - name: Commit and push changes
+  #       run: |
+  #         git config --global user.name "github-actions"
+  #         git config --global user.email "github-actions@github.com"
+  #         git add docs/
+  #         git commit -m "Update binaries"
+  #         git push origin gh-pages
