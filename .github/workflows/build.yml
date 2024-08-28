@@ -1,0 +1,41 @@
+name: Go Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        go-version: [1.22.2]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Build for ${{ matrix.os }}
+        run: |
+          mkdir -p build
+          GOOS=${{ matrix.os == 'windows-latest' && echo 'windows' || echo 'linux' }} GOARCH=amd64 go build -o build/${{ matrix.os == 'windows-latest' && echo 'webcheck.exe' || echo 'webcheck' }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-binary
+          path: build/
+
